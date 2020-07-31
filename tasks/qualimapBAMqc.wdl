@@ -10,7 +10,7 @@ task qualimapBAMqc {
 		set -e
 		nt=$(nproc)
 		/opt/qualimap/qualimap bamqc -bam ${bam} -outformat PDF:HTML -nt $nt -outdir ${bamname}_bamqc --java-mem-size=32G 
-		tar -zcvf ${bamname}_bamqc_qualimap.zip ${bamname}_bamqc
+		
 	>>>
 
 	runtime {
@@ -22,6 +22,6 @@ task qualimapBAMqc {
 
 	output {
 		File bamqc_zip = "${bamname}_bamqc_qualimap.zip"
-		Array[File] bamqc = glob("${bamname}_bamqc/*")
+		
 	}
 }

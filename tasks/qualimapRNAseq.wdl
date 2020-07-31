@@ -11,7 +11,7 @@ task qualimapRNAseq {
 		set -e
 		nt=$(nproc)
 		/opt/qualimap/qualimap rnaseq -bam ${bam} -outformat HTML -outdir ${bamname}_RNAseq -gtf ${gtf} -pe --java-mem-size=10G
-		tar -zcvf ${bamname}_RNAseq_qualimap.zip ${bamname}_RNAseq
+		
 	>>>
 
 	runtime {
@@ -23,6 +23,6 @@ task qualimapRNAseq {
 
 	output {
 		File rnaseq_zip = "${bamname}_RNAseq_qualimap.zip"
-		Array[File] RNAseqqc = glob("${bamname}_RNAseq/*")
+		
 	}
 }
