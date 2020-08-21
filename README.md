@@ -14,7 +14,8 @@
 # 激活choppy环境
 source activate choppy
 # 安装app
-choppy install lizhihui/RNAseq_germline_datapotal
+choppy install lizhihui/quartet-rnaseq-qc
+
 ```
 
 ## App概述——中华家系1号标准物质介绍
