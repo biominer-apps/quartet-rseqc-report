@@ -6,7 +6,7 @@
 >
 > Git: http://choppy.3steps.cn/renluyao/RNAseq_germline_datapotal.git
 >
-> Last Updates: 2020/07/13
+> Last Updates: 2020/08/23
 
 ## 安装指南
 
