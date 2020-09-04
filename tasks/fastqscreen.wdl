@@ -13,9 +13,9 @@ task fastq_screen {
 		set -o pipefail
 		set -e
 		nt=$(nproc)
-		# mkdir -p /cromwell_root/tmp
-		# cp -r ${screen_ref_dir} /cromwell_root/tmp/
-		sed -i "s#/cromwell_root/fastq_screen_reference#${screen_ref_dir}#g" ${fastq_screen_conf}
+		mkdir -p /cromwell_root/tmp
+		cp -r ${screen_ref_dir} /cromwell_root/tmp/
+		#sed -i "s#/cromwell_root/fastq_screen_reference#${screen_ref_dir}#g" ${fastq_screen_conf}
 		fastq_screen --aligner bowtie2 --conf ${fastq_screen_conf} --top 100000 --threads $nt ${read1}
 		fastq_screen --aligner bowtie2 --conf ${fastq_screen_conf} --top 100000 --threads $nt ${read2}
 	>>>
