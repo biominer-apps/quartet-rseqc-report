@@ -172,4 +172,13 @@ workflow {{ project_name }} {
 		minimum_isoform_abundance = minimum_isoform_abundance,
 		maximum_fraction_of_muliplelocationmapped_reads = maximum_fraction_of_muliplelocationmapped_reads
 		}
+
+		call ballgown.ballgown as ballgown {
+		input: 
+		docker = ballgown_docker,
+		cluster = ballgown_cluster,
+		ballgown = stringtie.ballgown,
+		gene_abundance = stringtie.gene_abundance,
+		disk_size = disk_size
+		} 
 }

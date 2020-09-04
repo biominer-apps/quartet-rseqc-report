@@ -1,15 +1,14 @@
 task ballgown {
     File gene_abundance
-    String base = basename(gene_abundance, ".gene.abundance.txt")
     Array[File] ballgown
     String docker
     String cluster
     String disk_size
 
     command <<<
-      mkdir -p /cromwell_root/tmp/${base}
-      cp -r ${sep=" " ballgown} /cromwell_root/tmp/${base}
-      ballgown /cromwell_root/tmp/${base} ${base}.txt
+      mkdir -p /cromwell_root/tmp/${sample_id}
+      cp -r ${sep=" " ballgown} /cromwell_root/tmp/${sample_id}
+      ballgown /cromwell_root/tmp/${sample_id} ${sample_id}.txt
     >>>
     
     runtime {
@@ -20,6 +19,6 @@ task ballgown {
     }
     
     output {
-      File mat_expression = "${base}.txt"
+      File mat_expression = "${sample_id}.txt"
     }
 }

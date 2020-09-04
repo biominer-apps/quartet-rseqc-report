@@ -1,8 +1,6 @@
 task fastqc {
 	File read1
 	File read2
-	String bamname1 = basename(read1,"\\.(fastq|fq)\\.gz$")
-	String bamname2 = basename(read2,"\\.(fastq|fq)\\.gz$")
 	String docker
 	String cluster_config
 	String disk_size

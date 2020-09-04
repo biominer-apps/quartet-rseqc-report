@@ -20,7 +20,7 @@ task stringtie {
       docker: docker
       cluster: cluster
       systemDisk: "cloud_ssd 40"
-      dataDisk: "cloud_ssd 150 /cromwell_root/"
+      dataDisk: "cloud_ssd " + disk_size + " /cromwell_root/"
     }
     
     output {
