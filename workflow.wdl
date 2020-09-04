@@ -70,6 +70,7 @@ workflow {{ project_name }} {
 	Float maximum_fraction_of_muliplelocationmapped_reads
 	String ballgown_docker
 	String ballgown_cluster
+	String disk_size
 
 	call fastp.fastp as fastp {
 		input: 
