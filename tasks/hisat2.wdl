@@ -6,6 +6,7 @@ task hisat2 {
    String sample_id
    String docker
    String cluster
+   String disk_size
    String pen_intronlen
    Int pen_cansplice
    Int pen_noncansplice

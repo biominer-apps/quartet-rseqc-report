@@ -8,6 +8,7 @@ task samtools {
     String ins_size = sample_id + ".ins_size"
     String docker
     String cluster
+    String disk_size
     Int insert_size
 
     command <<<

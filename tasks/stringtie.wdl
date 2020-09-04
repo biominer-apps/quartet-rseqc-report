@@ -4,6 +4,7 @@ task stringtie {
     String docker
     String sample_id
     String cluster
+    String disk_size
     Int minimum_length_allowed_for_the_predicted_transcripts
     Int Junctions_no_spliced_reads
     Float minimum_isoform_abundance

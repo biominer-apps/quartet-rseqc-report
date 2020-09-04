@@ -6,6 +6,7 @@ task fastp {
     String adapter_sequence_r2
     String docker
     String cluster
+    String disk_size
     String umi_loc	
     Int trim_front1
     Int trim_tail1
@@ -55,7 +56,7 @@ task fastp {
 		docker: docker
 		cluster: cluster
 		systemDisk: "cloud_ssd 40"
-		dataDisk: "cloud_ssd 200 /cromwell_root/"
+		dataDisk: "cloud_ssd " + disk_size + " /cromwell_root/"
    }
 
    output {
