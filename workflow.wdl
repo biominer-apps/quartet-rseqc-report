@@ -74,8 +74,8 @@ workflow {{ project_name }} {
 	call fastp.fastp as fastp {
 		input: 
 		sample_id=sample_id, 
-		read1= read1, 
-		read2= read2,
+		read1 = read1, 
+		read2 = read2,
 		docker = fastp_docker,
 		cluster = fastp_cluster,
 		adapter_sequence = adapter_sequence,
@@ -96,35 +96,36 @@ workflow {{ project_name }} {
 		disable_quality_filtering = disable_quality_filtering
 		}
 
-		call fastqc.fastqc as fastqc {
+	call fastqc.fastqc as fastqc {
 		input:
-		read1=fastp.Trim_R1, 
-		read2=fastp.Trim_R2,
-		docker=fastqc_docker,
-		cluster_config=fastqc_cluster_config,
-		disk_size=fastqc_disk_size
-		}
+		read1 = fastp.Trim_R1, 
+		read2 = fastp.Trim_R2,
+		docker = fastqc_docker,
+		cluster_config = fastqc_cluster_config,
+		disk_size = fastqc_disk_size
+	}
 
-		call fastqscreen.fastq_screen as fastqscreen {
+	call fastqscreen.fastq_screen as fastqscreen {
 		input:
-		read1=fastp.Trim_R1, 
-		read2=fastp.Trim_R2,
-		screen_ref_dir=screen_ref_dir,
-		fastq_screen_conf=fastq_screen_conf,
+		read1 = fastp.Trim_R1, 
+		read2 = fastp.Trim_R2,
+		screen_ref_dir = screen_ref_dir,
+		fastq_screen_conf = fastq_screen_conf,
 		docker = fastqscreen_docker,
 		cluster_config = fastqscreen_cluster_config,
-		disk_size= fastqscreen_disk_size
-		}
+		disk_size = fastqscreen_disk_size
+	}
 
-		call hisat2.hisat2 as hisat2 {
+	call hisat2.hisat2 as hisat2 {
 		input: 
-		sample_id=sample_id, 
+		sample_id = sample_id, 
 		idx = idx, 
 		idx_prefix = idx_prefix, 
 		Trim_R1 = fastp.Trim_R1, 
 		Trim_R2 = fastp.Trim_R2,
 		docker = hisat2_docker,
 		cluster = hisat2_cluster,
+		disk_size = disk_size,
 		pen_intronlen = pen_intronlen,
 		pen_cansplice = pen_cansplice,
 		pen_noncansplice = pen_noncansplice,
@@ -132,53 +133,55 @@ workflow {{ project_name }} {
 		max_intronlen = max_intronlen,
 		maxins = maxins,
 		minins = minins
-		}
+	}
 
-		call samtools.samtools as samtools {
+	call samtools.samtools as samtools {
 		input: 
-		sample_id=sample_id, 
+		sample_id = sample_id, 
 		sam = hisat2.sam,
 		docker = samtools_docker,
 		cluster = samtools_cluster,
+		disk_size = disk_size,
 		insert_size = insert_size
-		}
-				
-		call qualimapBAMqc.qualimapBAMqc as qualimapBAMqc {
+	}
+			
+	call qualimapBAMqc.qualimapBAMqc as qualimapBAMqc {
 		input:
 		bam = samtools.out_percent,
 		docker = qualimapBAMqc_docker,
 		cluster_config = qualimapBAMqc_cluster_config,
 		disk_size = qualimapBAMqc_disk_size
-		}
+	}
 
-		call qualimapRNAseq.qualimapRNAseq as qualimapRNAseq {
+	call qualimapRNAseq.qualimapRNAseq as qualimapRNAseq {
 		input:
 		bam = samtools.out_percent,
 		docker = qualimapRNAseq_docker,
 		cluster_config = qualimapRNAseq_cluster_config,
 		disk_size = qualimapRNAseq_disk_size,
 		gtf = gtf
-		}
+	}
 
-		call stringtie.stringtie as stringtie {
+	call stringtie.stringtie as stringtie {
 		input: 
-		sample_id=sample_id,
+		sample_id = sample_id,
 		gtf = gtf, 
 		bam = samtools.out_bam,
 		docker = stringtie_docker,
 		cluster = stringtie_cluster,
+		disk_size = disk_size,
 		minimum_length_allowed_for_the_predicted_transcripts = minimum_length_allowed_for_the_predicted_transcripts,
 		Junctions_no_spliced_reads = Junctions_no_spliced_reads,
 		minimum_isoform_abundance = minimum_isoform_abundance,
 		maximum_fraction_of_muliplelocationmapped_reads = maximum_fraction_of_muliplelocationmapped_reads
-		}
+	}
 
-		call ballgown.ballgown as ballgown {
+	call ballgown.ballgown as ballgown {
 		input: 
 		docker = ballgown_docker,
 		cluster = ballgown_cluster,
 		ballgown = stringtie.ballgown,
 		gene_abundance = stringtie.gene_abundance,
 		disk_size = disk_size
-		} 
+	} 
 }
