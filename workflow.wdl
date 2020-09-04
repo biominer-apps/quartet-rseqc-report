@@ -178,6 +178,7 @@ workflow {{ project_name }} {
 
 	call ballgown.ballgown as ballgown {
 		input: 
+		sample_id = sample_id,
 		docker = ballgown_docker,
 		cluster = ballgown_cluster,
 		ballgown = stringtie.ballgown,
