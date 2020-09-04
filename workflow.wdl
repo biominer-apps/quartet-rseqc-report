@@ -79,6 +79,7 @@ workflow {{ project_name }} {
 		read2 = read2,
 		docker = fastp_docker,
 		cluster = fastp_cluster,
+		disk_size = disk_size,
 		adapter_sequence = adapter_sequence,
 		adapter_sequence_r2 = adapter_sequence_r2,
 		umi_loc = umi_loc,
