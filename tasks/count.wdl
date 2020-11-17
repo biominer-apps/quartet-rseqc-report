@@ -6,8 +6,9 @@ task count {
     String disk_size
 
     command <<<
-      mkdir -p /cromwell_root/tmp/ballgown/${sample_id}
-      cp -r ${sep=" " ballgown} /cromwell_root/tmp/ballgown/${sample_id}
+      mkdir -p /cromwell_root/tmp/ballgown/
+      cp -r ${sep=" " ballgown} /cromwell_root/tmp/ballgown/
+      cd /cromwell_root/tmp/
       count -g ${sample_id}_gene_count_matrix.csv -t ${sample_id}_transcript_count_matrix.csv
     >>>
     
