@@ -61,5 +61,7 @@
 	"{{ project_name }}.multiqc_disk_size": "{{ multiqc_disk_size }}",
 	"{{ project_name }}.ballgown_docker": "{{ ballgown_docker }}",
 	"{{ project_name }}.ballgown_cluster": "{{ ballgown_cluster }}",
-	"{{ project_name }}.disk_size": "{{ disk_size if disk_size != '' else 200}}"
+	"{{ project_name }}.disk_size": "{{ disk_size if disk_size != '' else 200}}",
+	"{{ project_name }}.count_docker": "{{ count_docker }}",
+	"{{ project_name }}.count_cluster": "{{ count_cluster }}",
 }

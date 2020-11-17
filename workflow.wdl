@@ -7,6 +7,7 @@ import "./tasks/fastqscreen.wdl" as fastqscreen
 import "./tasks/qualimapBAMqc.wdl" as qualimapBAMqc
 import "./tasks/qualimapRNAseq.wdl" as qualimapRNAseq
 import "./tasks/ballgown.wdl" as ballgown
+import "./tasks/count.wdl" as count
 
 workflow {{ project_name }} {
 	File read1
@@ -71,6 +72,8 @@ workflow {{ project_name }} {
 	String ballgown_docker
 	String ballgown_cluster
 	String disk_size
+	String count_docker
+	String count_cluster
 
 	call fastp.fastp as fastp {
 		input: 
@@ -185,6 +188,16 @@ workflow {{ project_name }} {
 		cluster = ballgown_cluster,
 		ballgown = stringtie.ballgown,
 		gene_abundance = stringtie.gene_abundance,
+		disk_size = disk_size
+	} 
+
+	call count.count as count {
+		input: 
+		sample_id = sample_id,
+		docker = count_docker,
+		cluster = count_cluster,
+		ballgown = stringtie.ballgown,
+		#gene_abundance = stringtie.gene_abundance,
 		disk_size = disk_size
 	} 
 }
