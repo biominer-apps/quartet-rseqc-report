@@ -1,4 +1,5 @@
 task count {
+    File gene_abundance
     Array[File] ballgown
     String sample_id
     String docker
@@ -7,7 +8,7 @@ task count {
 
     command <<<
       mkdir -p /cromwell_root/tmp/${sample_id}
-      cp -r ${sep=" " ballgown} /cromwell_root/tmp/${sample_id}
+      cp -r ${sep=" " ballgown} /cromwell_root/tmp/ballgown/${sample_id}
       count -g ${sample_id}_gene_count_matrix.csv -t ${sample_id}_transcript_count_matrix.csv
     >>>
     
