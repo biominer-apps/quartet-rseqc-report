@@ -1,5 +1,4 @@
 task count {
-    File gene_abundance
     Array[File] ballgown
     String sample_id
     String docker
