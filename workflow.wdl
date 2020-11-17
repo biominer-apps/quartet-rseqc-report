@@ -197,7 +197,6 @@ workflow {{ project_name }} {
 		docker = count_docker,
 		cluster = count_cluster,
 		ballgown = stringtie.ballgown,
-		#gene_abundance = stringtie.gene_abundance,
 		disk_size = disk_size
 	} 
 }
