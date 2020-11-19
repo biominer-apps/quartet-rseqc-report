@@ -67,6 +67,7 @@ workflow {{ project_name }} {
 	Int insert_size
 	Int minimum_length_allowed_for_the_predicted_transcripts
 	Int Junctions_no_spliced_reads
+	Int count_length
 	Float minimum_isoform_abundance
 	Float maximum_fraction_of_muliplelocationmapped_reads
 	String ballgown_docker
@@ -197,6 +198,7 @@ workflow {{ project_name }} {
 		docker = count_docker,
 		cluster = count_cluster,
 		ballgown = stringtie.ballgown,
-		disk_size = disk_size
+		disk_size = disk_size,
+		count_length = count_length
 	} 
 }
