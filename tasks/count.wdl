@@ -4,7 +4,7 @@ task count {
     String docker
     String cluster
     String disk_size
-	Int count_length
+    Int count_length
 
     command <<<
       mkdir -p /cromwell_root/tmp/ballgown/${sample_id}
