@@ -4,11 +4,12 @@ task count {
     String docker
     String cluster
     String disk_size
+	Int count_length
 
     command <<<
       mkdir -p /cromwell_root/tmp/ballgown/${sample_id}
       cp -r ${sep=" " ballgown} /cromwell_root/tmp/ballgown/${sample_id}
-      count -i /cromwell_root/tmp/ballgown -l 150 -g ${sample_id}_gene_count_matrix.csv -t ${sample_id}_transcript_count_matrix.csv
+      count -i /cromwell_root/tmp/ballgown -l ${count_length} -g ${sample_id}_gene_count_matrix.csv -t ${sample_id}_transcript_count_matrix.csv
     >>>
     
     runtime {
