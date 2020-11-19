@@ -59,5 +59,6 @@
     "ballgown_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/pgx-ballgown:0.0.1",
     "ballgown_cluster": "OnDemand bcs.a2.large img-ubuntu-vpc",
     "count_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/count:v1.0",
-    "count_cluster": "OnDemand bcs.a2.large img-ubuntu-vpc"
+    "count_cluster": "OnDemand bcs.a2.large img-ubuntu-vpc",
+	"count_length": "150"
     }
