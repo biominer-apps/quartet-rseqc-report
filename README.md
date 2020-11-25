@@ -2,11 +2,11 @@
 
 > Author:  Li Zhihui
 >
-> E-mail：18210700119@fudan.edu.cn
+> E-mail：zhihuili18@fudan.edu.cn
 >
-> Git: http://choppy.3steps.cn/renluyao/RNAseq_germline_datapotal.git
+> Git: http://choppy.3steps.cn/renluyao/quartet-rnaseq-qc.git
 >
-> Last Updates: 2020/08/23
+> Last Updates: 2020/11/25
 
 ## 安装指南
 
@@ -15,7 +15,6 @@
 source activate choppy
 # 安装app
 choppy install lizhihui/quartet-rnaseq-qc
-
 ```
 
 ## App概述——中华家系1号标准物质介绍
@@ -71,32 +70,24 @@ qualimap rnaseq -bam ${bam} -outformat HTML -outdir ${bamname}_RNAseq -gtf ${gtf
 Rscript
 ```
 
-分析采用实验室内部使用的代码，对从以下10个方面评估数据质量：
+分析采用实验室内部使用的代码，对从以下4个方面评估数据质量：
 
-- Number of detected genes
-- Detection Jaccard index (JI)
-- Coefficient of variation (CV)
 - Correlation of technical replicates (CTR)
-- Sensitivity of detection
-- Specificity of detection
 - Consistency ratio of relative expression
 - Correlation of relative log2FC
-- Sensitivity of DEGs
-- Specificity of DEGs
-- Signal-to-noise Ratio (SNR) )
+- Signal-to-noise Ratio (SNR) 
 
 ## App输入文件
 
 ```
-#read1	#read2	#sample_id	#adapter_sequence	#adapter_sequence_r2
-#待更新
+#read1	#read2	#sample_id	#disk_size
 ```
 
 
 
 参数设置：
 
-若有修改需求，请在input文件中添加新的行
+若有修改需求，请在input文件中添加新的列
 
 #### [fastp](https://github.com/OpenGene/fastp)
 
@@ -206,9 +197,28 @@ Rscript
 
 | 参数名                 | 参数解释              | 默认值                                                       |
 | ---------------------- | --------------------- | ------------------------------------------------------------ |
-| multiqc_cluster_config | multiqc软件版本信息   | OnDemand bcs.b2.3xlarge img-ubuntu-vpc                       |
+| multiqc_cluster_config | multiqc软件版本信息   | registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/count:v1.0 |
 | multiqc_docker         | multiqc软件使用服务器 | registry-vpc.cn-shanghai.aliyuncs.com/pgx-docker-registry/multiqc:v1.8 |
 | multiqc_disk_size      | multiqc文件盘大小     | 100                                                          |
+
+
+
+#### [Count](https://ccb.jhu.edu/software/stringtie/dl/prepDE.py)
+
+| 参数名        | 参数解释          | 默认值                                                       |
+| ------------- | ----------------- | ------------------------------------------------------------ |
+| count_docker  | count版本信息     | registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/pgx-ballgown:0.0.1 |
+| count_cluster | count使用服务器   | OnDemand bcs.a2.large img-ubuntu-vpc                         |
+| count_length  | multiqc文件盘大小 | 150                                                          |
+
+
+
+#### [FPKM](http://bioconductor.org/packages/release/bioc/html/ballgown.html)
+
+| 参数名           | 参数解释               | 默认值                                                       |
+| ---------------- | ---------------------- | ------------------------------------------------------------ |
+| ballgown_docker  | ballgown软件版本信息   | OnDemand bcs.b2.3xlarge img-ubuntu-vpc                       |
+| ballgown_cluster | ballgown软件使用服务器 | registry-vpc.cn-shanghai.aliyuncs.com/pgx-docker-registry/multiqc:v1.8 |
 
 
 
@@ -224,75 +234,14 @@ Rscript
 
 原始数据质量和数据比对质量结果汇总（example）
 
-### 2. One_sample.csv
+### 2. Depend on study design.csv
 
-| Name                     | Description                                                  | Group | Value      | Reference_value | Conclusion |
-| ------------------------ | ------------------------------------------------------------ | ----- | ---------- | --------------- | ---------- |
-| Detected_gene            | This metric is used to estimate the detection abundance of one sample. | D5    | 25126.6667 | (**, 58,395]    |            |
-|                          |                                                              | D6    | 25858.6667 | (**, 58,395]    |            |
-|                          |                                                              | F7    | 26089.6667 | (**, 58,395]    |            |
-|                          |                                                              | M8    | 26618      | (**, 58,395]    |            |
-| Jacard Index             | Detection JI is the ratio of number of the genes detected in both  replicates than the number of the genes detected in either of the replicates.  This metric is used to estimate the repeatability of one sample detected gene  from different replicates. | D5    | 0.8756     | [0.8, 1]        | Pass       |
-|                          |                                                              | D6    | 0.8752     | [0.8, 1]        | Pass       |
-|                          |                                                              | F7    | 0.8675     | [0.8, 1]        | Pass       |
-|                          |                                                              | M8    | 0.8804     | [0.8, 1]        | Pass       |
-| CV                       | CV is calculated based on the normalized expression levels in all 3  replicates of one sample for each genes. This metric is used to estimate the  repeatability of one sample expression level from different replicates. | D5    | 11.4836    |                 |            |
-|                          |                                                              | D6    | 10.8401    |                 |            |
-|                          |                                                              | F7    | 12.2976    |                 |            |
-|                          |                                                              | M8    | 10.8662    |                 |            |
-| CTR                      | CTR is calculated based on the correlation of one sample expression level  from different replicates. | D5    | 0.9718     | [0.95, 1]       | Pass       |
-|                          |                                                              | D6    | 0.9737     | [0.95, 1]       | Pass       |
-|                          |                                                              | F7    | 0.9699     | [0.95, 1]       | Pass       |
-|                          |                                                              | M8    | 0.9725     | [0.95, 1]       | Pass       |
-| Sensitivity_of_detection | Sensitivity is the proportion of true detected genes from reference  dataset which can be correctly detected by the test set. | D5    | 0.9788     | [0.96, 1]       | Pass       |
-|                          |                                                              | D6    | 0.9794     | [0.96, 1]       | Pass       |
-|                          |                                                              | F7    | 0.9774     | [0.96, 1]       | Pass       |
-|                          |                                                              | M8    | 0.9818     | [0.96, 1]       | Pass       |
-| Specificity_of_detection | Specificity is the proportion of true  non-detected genes from reference dataset which can be correctly not detected  by the test set. | D5    | 0.9727     | [0.94, 1]       | Pass       |
-|                          |                                                              | D6    | 0.9713     | [0.94, 1]       | Pass       |
-|                          |                                                              | F7    | 0.9694     | [0.94, 1]       | Pass       |
-|                          |                                                              | M8    | 0.9677     | [0.94, 1]       | Pass       |
-
-一个种类样本层面数据表达质量（example）
-
-### 3. Two_sample.csv
-
-| Name                                     | Description                                                  | Group | Value      | Reference_value | Conclusion |
-| ---------------------------------------- | ------------------------------------------------------------ | ----- | ---------- | --------------- | ---------- |
-| Consistency_ratio_of_relative_expression | Proportion of genes that falls into reference range (mean +-2 fold SD) in  relative ratio (log2FC). | D6/D5 | 1          | [0.82, 1]       | Pass       |
-|                                          |                                                              | F7/D5 | 1          | [0.82, 1]       | Pass       |
-|                                          |                                                              | F7/D6 | 1          | [0.82, 1]       | Pass       |
-|                                          |                                                              | M8/D5 | 1          | [0.82, 1]       | Pass       |
-|                                          |                                                              | M8/D6 | 1          | [0.82, 1]       | Pass       |
-|                                          |                                                              | M8/F7 | 1          | [0.82, 1]       | Pass       |
-| Correlation_of_relative_log2FC           | Pearson correlation between mean value of reference relative ratio and  test site. | D6/D5 | 0.98137614 | [0.96,1]        | Pass       |
-|                                          |                                                              | F7/D5 | 0.9725557  | [0.96,1]        | Pass       |
-|                                          |                                                              | F7/D6 | 0.96789651 | [0.96,1]        | Pass       |
-|                                          |                                                              | M8/D5 | 0.97951286 | [0.96,1]        | Pass       |
-|                                          |                                                              | M8/D6 | 0.97959193 | [0.96,1]        | Pass       |
-|                                          |                                                              | M8/F7 | 0.97736629 | [0.96,1]        | Pass       |
-| Sensitivity_of_DEGs                      | Sensitivity is the proportion of true DEGs from reference dataset which  can be correctly identified as DEG by the test set. | D6/D5 | 0.8344293  | [0.80, 1]       | Pass       |
-|                                          |                                                              | F7/D5 | 0.84870451 | [0.80, 1]       | Pass       |
-|                                          |                                                              | F7/D6 | 0.84516486 | [0.80, 1]       | Pass       |
-|                                          |                                                              | M8/D5 | 0.86227581 | [0.80, 1]       | Pass       |
-|                                          |                                                              | M8/D6 | 0.86363942 | [0.80, 1]       | Pass       |
-|                                          |                                                              | M8/F7 | 0.85718483 | [0.80, 1]       | Pass       |
-| Specificity_of_DEGs                      | Specificity is the proportion of true not DEGs from reference dataset  which can be can be correctly identified as non-DEG by the test set. | D6/D5 | 0.97680659 | [0.95, 1]       | Pass       |
-|                                          |                                                              | F7/D5 | 0.97056775 | [0.95, 1]       | Pass       |
-|                                          |                                                              | F7/D6 | 0.975892   | [0.95, 1]       | Pass       |
-|                                          |                                                              | M8/D5 | 0.96896379 | [0.95, 1]       | Pass       |
-|                                          |                                                              | M8/D6 | 0.97206349 | [0.95, 1]       | Pass       |
-|                                          |                                                              | M8/F7 | 0.96594245 | [0.95, 1]       | Pass       |
-
-两个种类样本层面数据表达质量（example）
-
-### 4. More_sample.csv
-
-| Name | Description                                                  | n     | Value | Refenence_value | Conclusion |
-| ---- | ------------------------------------------------------------ | ----- | ----- | --------------- | ---------- |
-| SNR  | Signal is defined as the average distance between libraries from the  different samples on PCA plots and noise are those form the same samples. SNR  is used to assess the ability to distinguish technical replicates from  different biological samples. | 23705 | 13.64 | [5, inf)        | Pass       |
-
-多个种类样本层面数据表达质量（example）
+| Quality metrics              | Category    | Value         | Historical value | Rank |
+| ---------------------------- | ----------- | ------------- | ---------------- | ---- |
+|                              |             |               | (mean ± SD)      |      |
+| ­Signal-to-Noise Ratio (SNR) | More groups | 14.45 ± 9.58  |                  |      |
+| Relative correlation         | Two groups  | 0.493 ± 0.111 |                  |      |
+| Absolute correlation         | One group   |               | 0.973 ± 0.015    |      |
 
 
 
@@ -336,21 +285,7 @@ Rscript
 
 | Quality metrics                           | Category    | Description                                                  | Reference value |
 | ----------------------------------------- | ----------- | ------------------------------------------------------------ | --------------- |
-| Number of detected genes                  | One group   | This metric is used to estimate the  detection abundance of one sample. | (**, 58,395]    |
-| Detection Jaccard index (JI)              | One group   | Detection JI is the ratio of number of the  genes detected in both replicates than the number of the genes detected in  either of the replicates. This metric is used to estimate the  repeatability of one sample detected gene from different replicates. | [0.8, 1]        |
-| Coefficient of variation (CV)             | One group   | CV is calculated based on the  normalized expression levels in all 3 replicates of one sample for each  genes. This metric is used to estimate the repeatability of one sample  expression level from different replicates. | [0, 0.2]        |
-| Correlation of technical replicates (CTR) | One group   | CTR is calculated based on the correlation  of one sample expression level from different replicates. | [0.95, 1]       |
 | Signal-to-noise Ratio (SNR)               | More groups | Signal is defined as the average distance  between libraries from the different samples on PCA plots and noise are those  form the same samples. SNR is used to assess the ability to distinguish  technical replicates from different biological samples. | [5, inf)        |
-| Sensitivity of  detection                 | One group   | Sensitivity is the proportion of  "true" detected genes from reference dataset which can be  correctly detected by the test set. | [0.96, 1]       |
-| Specificity of  detection                 | One group   | Specificity is the proportion of  "true" non-detected genes from reference dataset which can be  correctly not detected by the test set. | [0.94, 1]       |
 | Consistency  ratio of relative expression | Two groups  | Proportion of genes that falls into  reference range (mean ± 2 fold SD) in relative ratio (log2FC). | [0.82, 1]       |
 | Correlation of  relative log2FC           | Two groups  | Pearson correlation between mean value  of reference relative ratio and test site. | [0.96,1]        |
-| Sensitivity of  DEGs                      | Two groups  | Sensitivity is the proportion of  "true" DEGs from reference dataset which can be correctly  identified as DEG by the test set. | [0.80, 1]       |
-| Specificity of  DEGs                      | Two groups  | Specificity is the proportion of  "true" not DEGs from reference dataset which can be can be  correctly identified as non-DEG by the test set. | [0.95, 1]       |
-
-
-
-
-
-
-
+| Correlation of technical replicates (CTR) | One group   | CTR is calculated based on the correlation  of one sample expression level from different replicates. | [0.95, 1]       |
