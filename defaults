@@ -40,7 +40,7 @@
     "Junctions_no_spliced_reads":"10",
     "maximum_fraction_of_muliplelocationmapped_reads":"0.95",
     "fastqc_cluster_config": "OnDemand bcs.b2.3xlarge img-ubuntu-vpc",
-    "fastqc_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/fastqc:v0.11.5",
+    "fastqc_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/fastqc:0.11.8",
     "fastqc_disk_size": "150",
     "qualimapBAMqc_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/qualimap:2.0.0",
     "qualimapBAMqc_cluster_config": "OnDemand bcs.a2.7xlarge img-ubuntu-vpc",
