@@ -28,6 +28,6 @@ task stringtie {
       File covered_transcripts = "${sample_id}.cov.ref.gtf"
       File gene_abundance = "${sample_id}.gene.abundance.txt"
       Array[File] ballgown = ["ballgown/${sample_id}/${sample_id}.gtf", "ballgown/${sample_id}/e2t.ctab", "ballgown/${sample_id}/e_data.ctab", "ballgown/${sample_id}/i2t.ctab", "ballgown/${sample_id}/i_data.ctab", "ballgown/${sample_id}/t_data.ctab"]
-      File genecount = "{sample_id}_genecount.csv"
+      File genecount = "${sample_id}_genecount.csv"
     }
 }
