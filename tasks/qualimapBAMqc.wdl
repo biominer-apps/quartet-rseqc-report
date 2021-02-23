@@ -9,8 +9,8 @@ task qualimapBAMqc {
 		set -o pipefail
 		set -e
 		nt=$(nproc)
-		/opt/qualimap/qualimap bamqc -bam ${bam} -outformat PDF:HTML -nt $nt -outdir ${bamname}_bamqc --java-mem-size=32G 
-		tar -zcvf ${bamname}.zip ${bamname}_bamqc
+		/opt/qualimap/qualimap bamqc -bam ${bam} -outformat PDF:HTML -nt $nt -outdir ${bamname} --java-mem-size=32G 
+		tar -zcvf ${bamname}_bamqc_qualimap.zip ${bamname}
 		
 	>>>
 
@@ -22,7 +22,7 @@ task qualimapBAMqc {
 	}
 
 	output {
-		File bamqc_zip = "${bamname}.zip"
+		File bamqc_zip = "${bamname}_bamqc_qualimap.zip"
 		
 	}
 }

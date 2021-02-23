@@ -10,8 +10,8 @@ task qualimapRNAseq {
 		set -o pipefail
 		set -e
 		nt=$(nproc)
-		/opt/qualimap/qualimap rnaseq -bam ${bam} -outformat HTML -outdir ${bamname}_RNAseq -gtf ${gtf} -pe --java-mem-size=10G
-		tar -zcvf ${bamname}.zip ${bamname}_RNAseq
+		/opt/qualimap/qualimap rnaseq -bam ${bam} -outformat HTML -outdir ${bamname} -gtf ${gtf} -pe --java-mem-size=10G
+		tar -zcvf ${bamname}_RNAseq_qualimap.zip ${bamname}
 		
 	>>>
 
@@ -23,7 +23,7 @@ task qualimapRNAseq {
 	}
 
 	output {
-		File rnaseq_zip = "${bamname}.zip"
+		File rnaseq_zip = "${bamname}_RNAseq_qualimap.zip"
 		
 	}
 }
