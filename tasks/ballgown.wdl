@@ -10,6 +10,8 @@ task ballgown {
       mkdir -p /cromwell_root/tmp/${sample_id}
       cp -r ${sep=" " ballgown} /cromwell_root/tmp/${sample_id}
       ballgown /cromwell_root/tmp/${sample_id} ${sample_id}.txt
+      sed -i 's/"//g' ${base}.txt
+      sed -i '1s/FPKM./gene_id\t/g' ${base}.txt
     >>>
     
     runtime {
