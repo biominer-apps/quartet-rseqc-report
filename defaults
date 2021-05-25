@@ -60,5 +60,6 @@
     "ballgown_cluster": "OnDemand bcs.a2.large img-ubuntu-vpc",
     "count_docker": "registry.cn-shanghai.aliyuncs.com/pgx-docker-registry/count:v1.0",
     "count_cluster": "OnDemand bcs.a2.large img-ubuntu-vpc",
-    "count_length": "150"
+    "count_length": "150",
+	"disk_size": "200"
     }
