@@ -1,6 +1,6 @@
 task samtools {
     File sam
-    String sample_id
+    String sample_id=basename(sam, ".sam")
     String bam = sample_id + ".bam"
     String sorted_bam = sample_id + ".sorted.bam"
     String percent_bam = sample_id + ".percent.bam"

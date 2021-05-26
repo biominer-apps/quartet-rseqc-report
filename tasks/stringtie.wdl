@@ -2,7 +2,7 @@ task stringtie {
     File bam
     File gtf
     String docker
-    String sample_id
+    String sample_id=basename(bam, ".sorted.bam")
     String cluster
     String disk_size
     Int minimum_length_allowed_for_the_predicted_transcripts

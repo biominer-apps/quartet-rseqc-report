@@ -3,7 +3,7 @@ task hisat2 {
    File Trim_R1
    File Trim_R2
    String idx_prefix
-   String sample_id
+   String sample_id=basename(Trim_R1, "_R1.fastq.gz")
    String docker
    String cluster
    String disk_size

@@ -9,7 +9,6 @@ import "./tasks/qualimapRNAseq.wdl" as qualimapRNAseq
 import "./tasks/ballgown.wdl" as ballgown
 import "./tasks/count.wdl" as count
 
-
 workflow {{ project_name }} {
 	File read1
 	File read2
@@ -17,7 +16,6 @@ workflow {{ project_name }} {
 	File screen_ref_dir
 	File fastq_screen_conf
 	File gtf
-	String sample_id
 	String fastp_docker
 	String adapter_sequence
 	String adapter_sequence_r2
@@ -79,7 +77,6 @@ workflow {{ project_name }} {
 
 	call fastp.fastp as fastp {
 		input: 
-		sample_id=sample_id, 
 		read1 = read1, 
 		read2 = read2,
 		docker = fastp_docker,
@@ -101,7 +98,7 @@ workflow {{ project_name }} {
 		qualified_quality_phred = qualified_quality_phred,
 		length_required1 = length_required1,
 		disable_quality_filtering = disable_quality_filtering
-		}
+	}
 
 	call fastqc.fastqc as fastqc {
 		input:
@@ -125,7 +122,6 @@ workflow {{ project_name }} {
 
 	call hisat2.hisat2 as hisat2 {
 		input: 
-		sample_id = sample_id, 
 		idx = idx, 
 		idx_prefix = idx_prefix, 
 		Trim_R1 = fastp.Trim_R1, 
@@ -144,7 +140,6 @@ workflow {{ project_name }} {
 
 	call samtools.samtools as samtools {
 		input: 
-		sample_id = sample_id, 
 		sam = hisat2.sam,
 		docker = samtools_docker,
 		cluster = samtools_cluster,
@@ -171,7 +166,6 @@ workflow {{ project_name }} {
 
 	call stringtie.stringtie as stringtie {
 		input: 
-		sample_id = sample_id,
 		gtf = gtf, 
 		bam = samtools.out_bam,
 		docker = stringtie_docker,
@@ -185,7 +179,6 @@ workflow {{ project_name }} {
 
 	call ballgown.ballgown as ballgown {
 		input: 
-		sample_id = sample_id,
 		docker = ballgown_docker,
 		cluster = ballgown_cluster,
 		ballgown = stringtie.ballgown,
@@ -195,7 +188,6 @@ workflow {{ project_name }} {
 
 	call count.count as count {
 		input: 
-		sample_id = sample_id,
 		docker = count_docker,
 		cluster = count_cluster,
 		ballgown = stringtie.ballgown,

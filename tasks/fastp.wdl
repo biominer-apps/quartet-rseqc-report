@@ -1,7 +1,7 @@
 task fastp {
-    String sample_id
     File read1
     File read2
+    String sample_id=sub(basename(read1), "_R1\\.(fastq|fq)\\.gz$", "")
     String adapter_sequence
     String adapter_sequence_r2
     String docker

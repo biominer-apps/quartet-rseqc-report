@@ -1,6 +1,7 @@
 task count {
+    File gene_abundance
     Array[File] ballgown
-    String sample_id
+    String sample_id=basename(gene_abundance, ".gene.abundance.txt")
     String docker
     String cluster
     String disk_size
