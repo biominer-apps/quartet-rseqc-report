@@ -192,6 +192,7 @@ workflow {{ project_name }} {
 		cluster = count_cluster,
 		ballgown = stringtie.ballgown,
 		disk_size = disk_size,
+                gene_abundance = stringtie.gene_abundance,
 		count_length = count_length
 	} 
 }
