@@ -9,37 +9,17 @@ import "./tasks/qualimapRNAseq.wdl" as qualimapRNAseq
 import "./tasks/ballgown.wdl" as ballgown
 import "./tasks/count.wdl" as count
 
-workflow {{ project_name }} {
+workflow rseqc {
 	File read1
 	File read2
 	File idx
-	File screen_ref_dir
 	File fastq_screen_conf
 	File gtf
-	String fastp_docker
 	String adapter_sequence
 	String adapter_sequence_r2
-	String fastp_cluster
 	String umi_loc
 	String idx_prefix
 	String pen_intronlen
-	String fastqc_cluster_config
-	String fastqc_docker
-	String fastqscreen_docker
-	String fastqscreen_cluster_config
-	String hisat2_docker
-	String hisat2_cluster
-	String qualimapBAMqc_docker
-	String qualimapBAMqc_cluster_config
-	String qualimapRNAseq_docker
-	String qualimapRNAseq_cluster_config
-	String samtools_docker
-	String samtools_cluster
-	String stringtie_docker
-	String stringtie_cluster
-	String multiqc_cluster_config
-	String multiqc_docker
-	Int multiqc_disk_size
 	Int trim_front1 
 	Int trim_tail1 
 	Int max_len1 
@@ -59,29 +39,17 @@ workflow {{ project_name }} {
 	Int max_intronlen
 	Int maxins
 	Int minins
-	Int fastqc_disk_size
-	Int fastqscreen_disk_size
-	Int qualimapBAMqc_disk_size
-	Int qualimapRNAseq_disk_size
 	Int insert_size
 	Int minimum_length_allowed_for_the_predicted_transcripts
 	Int Junctions_no_spliced_reads
 	Int count_length
 	Float minimum_isoform_abundance
 	Float maximum_fraction_of_muliplelocationmapped_reads
-	String ballgown_docker
-	String ballgown_cluster
-	String disk_size
-	String count_docker
-	String count_cluster
 
 	call fastp.fastp as fastp {
 		input: 
 		read1 = read1, 
 		read2 = read2,
-		docker = fastp_docker,
-		cluster = fastp_cluster,
-		disk_size = disk_size,
 		adapter_sequence = adapter_sequence,
 		adapter_sequence_r2 = adapter_sequence_r2,
 		umi_loc = umi_loc,
@@ -103,21 +71,14 @@ workflow {{ project_name }} {
 	call fastqc.fastqc as fastqc {
 		input:
 		read1 = fastp.Trim_R1, 
-		read2 = fastp.Trim_R2,
-		docker = fastqc_docker,
-		cluster_config = fastqc_cluster_config,
-		disk_size = fastqc_disk_size
+		read2 = fastp.Trim_R2
 	}
 
 	call fastqscreen.fastq_screen as fastqscreen {
 		input:
 		read1 = fastp.Trim_R1, 
 		read2 = fastp.Trim_R2,
-		screen_ref_dir = screen_ref_dir,
-		fastq_screen_conf = fastq_screen_conf,
-		docker = fastqscreen_docker,
-		cluster_config = fastqscreen_cluster_config,
-		disk_size = fastqscreen_disk_size
+		fastq_screen_conf = fastq_screen_conf
 	}
 
 	call hisat2.hisat2 as hisat2 {
@@ -126,9 +87,6 @@ workflow {{ project_name }} {
 		idx_prefix = idx_prefix, 
 		Trim_R1 = fastp.Trim_R1, 
 		Trim_R2 = fastp.Trim_R2,
-		docker = hisat2_docker,
-		cluster = hisat2_cluster,
-		disk_size = disk_size,
 		pen_intronlen = pen_intronlen,
 		pen_cansplice = pen_cansplice,
 		pen_noncansplice = pen_noncansplice,
@@ -141,26 +99,17 @@ workflow {{ project_name }} {
 	call samtools.samtools as samtools {
 		input: 
 		sam = hisat2.sam,
-		docker = samtools_docker,
-		cluster = samtools_cluster,
-		disk_size = disk_size,
 		insert_size = insert_size
 	}
 			
 	call qualimapBAMqc.qualimapBAMqc as qualimapBAMqc {
 		input:
-		bam = samtools.out_percent,
-		docker = qualimapBAMqc_docker,
-		cluster_config = qualimapBAMqc_cluster_config,
-		disk_size = qualimapBAMqc_disk_size
+		bam = samtools.out_percent
 	}
 
 	call qualimapRNAseq.qualimapRNAseq as qualimapRNAseq {
 		input:
 		bam = samtools.out_percent,
-		docker = qualimapRNAseq_docker,
-		cluster_config = qualimapRNAseq_cluster_config,
-		disk_size = qualimapRNAseq_disk_size,
 		gtf = gtf
 	}
 
@@ -168,9 +117,6 @@ workflow {{ project_name }} {
 		input: 
 		gtf = gtf, 
 		bam = samtools.out_bam,
-		docker = stringtie_docker,
-		cluster = stringtie_cluster,
-		disk_size = disk_size,
 		minimum_length_allowed_for_the_predicted_transcripts = minimum_length_allowed_for_the_predicted_transcripts,
 		Junctions_no_spliced_reads = Junctions_no_spliced_reads,
 		minimum_isoform_abundance = minimum_isoform_abundance,
@@ -179,8 +125,6 @@ workflow {{ project_name }} {
 
 	call ballgown.ballgown as ballgown {
 		input: 
-		docker = ballgown_docker,
-		cluster = ballgown_cluster,
 		ballgown = stringtie.ballgown,
 		gene_abundance = stringtie.gene_abundance,
 		disk_size = disk_size
@@ -188,11 +132,8 @@ workflow {{ project_name }} {
 
 	call count.count as count {
 		input: 
-		docker = count_docker,
-		cluster = count_cluster,
 		ballgown = stringtie.ballgown,
-		disk_size = disk_size,
-                gene_abundance = stringtie.gene_abundance,
+    gene_abundance = stringtie.gene_abundance,
 		count_length = count_length
 	} 
 }
