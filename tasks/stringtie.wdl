@@ -1,6 +1,7 @@
 task stringtie {
     File bam
     File gtf
+    String docker
     String sample_id=basename(bam, ".sorted.bam")
     Int minimum_length_allowed_for_the_predicted_transcripts
     Int Junctions_no_spliced_reads
@@ -14,7 +15,7 @@ task stringtie {
     >>>
     
     runtime {
-
+        docker: docker
     }
     
     output {

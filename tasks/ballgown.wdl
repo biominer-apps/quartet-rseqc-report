@@ -1,5 +1,6 @@
 task ballgown {
     File gene_abundance
+    String docker
     Array[File] ballgown
     String sample_id=basename(gene_abundance, ".gene.abundance.txt")
 
@@ -12,6 +13,10 @@ task ballgown {
     >>>
     
     runtime {
+      docker: docker
+      # cluster: "OnDemand bcs.a2.large img-ubuntu-vpc"
+      # systemDisk: "cloud_ssd 40"
+      # dataDisk: "cloud_ssd 100 /cromwell_root/"
     }
     
     output {

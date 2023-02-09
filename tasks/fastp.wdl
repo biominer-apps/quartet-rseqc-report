@@ -1,6 +1,7 @@
 task fastp {
     File read1
     File read2
+    String docker
     String sample_id=sub(basename(read1), "_R1\\.(fastq|fq)\\.gz$", "")
     String adapter_sequence
     String adapter_sequence_r2
@@ -44,16 +45,16 @@ task fastp {
             cp /cromwell_root/tmp/fastp/${sample_id}_R1.fastq.tmp2.gz ${sample_id}_R1.fastq.gz
             cp /cromwell_root/tmp/fastp/${sample_id}_R2.fastq.tmp2.gz ${sample_id}_R2.fastq.gz
         fi
-   >>>
+    >>>
    
-   runtime { 
+    runtime { 
+        docker: docker
+    }
 
-   }
-
-   output {
-      File json = "${sample_id}.json"
-      File report = "${sample_id}.html"
-      File Trim_R1 = "${sample_id}_R1.fastq.gz"
-      File Trim_R2 = "${sample_id}_R2.fastq.gz"
-   }
+    output {
+        File json = "${sample_id}.json"
+        File report = "${sample_id}.html"
+        File Trim_R1 = "${sample_id}_R1.fastq.gz"
+        File Trim_R2 = "${sample_id}_R2.fastq.gz"
+    }
 }

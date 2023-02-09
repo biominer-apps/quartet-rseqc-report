@@ -1,6 +1,7 @@
 task count {
     File gene_abundance
     Array[File] ballgown
+    String docker
     String sample_id=basename(gene_abundance, ".gene.abundance.txt")
     Int count_length
 
@@ -12,7 +13,7 @@ task count {
     >>>
     
     runtime {
-
+      docker: docker
     }
     
     output {

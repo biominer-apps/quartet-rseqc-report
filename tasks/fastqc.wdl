@@ -1,6 +1,7 @@
 task fastqc {
 	File read1
 	File read2
+	String docker
 
 	command <<<
 		set -o pipefail
@@ -11,7 +12,7 @@ task fastqc {
 	>>>
 
 	runtime {
-
+		docker: docker
 	}
 
 	output {

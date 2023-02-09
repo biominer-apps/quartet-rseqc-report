@@ -2,6 +2,7 @@ task hisat2 {
     File idx
     File Trim_R1
     File Trim_R2
+    String docker
     String sample_id=basename(Trim_R1, "_R1.fastq.gz")
     String pen_intronlen
     Int pen_cansplice
@@ -17,7 +18,7 @@ task hisat2 {
     >>>
    
     runtime { 
-
+        docker: docker
     }
 
     output {
