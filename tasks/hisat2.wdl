@@ -1,5 +1,6 @@
 task hisat2 {
     File idx
+    String idx_prefix
     File Trim_R1
     File Trim_R2
     String docker
@@ -14,7 +15,7 @@ task hisat2 {
    
     command <<<
         nt=$(nproc)
-        hisat2 -t -p $nt -x ${idx} --pen-cansplice ${pen_cansplice} --pen-noncansplice ${pen_noncansplice} --pen-intronlen ${pen_intronlen} --min-intronlen ${min_intronlen} --max-intronlen ${max_intronlen} --maxins ${maxins} --minins ${minins} --un-conc-gz ${sample_id}_un.fq.gz -1 ${Trim_R1} -2 ${Trim_R2} -S ${sample_id}.sam 
+        hisat2 -t -p $nt -x ${idx}/${idx_prefix} --pen-cansplice ${pen_cansplice} --pen-noncansplice ${pen_noncansplice} --pen-intronlen ${pen_intronlen} --min-intronlen ${min_intronlen} --max-intronlen ${max_intronlen} --maxins ${maxins} --minins ${minins} --un-conc-gz ${sample_id}_un.fq.gz -1 ${Trim_R1} -2 ${Trim_R2} -S ${sample_id}.sam 
     >>>
    
     runtime { 

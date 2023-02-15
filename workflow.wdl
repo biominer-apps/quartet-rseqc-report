@@ -18,6 +18,7 @@ workflow {{ project_name }} {
     File gtf
 
     # Optional
+    String idx_prefix
     String docker
     String adapter_sequence
     String adapter_sequence_r2
@@ -90,6 +91,7 @@ workflow {{ project_name }} {
     call hisat2_task.hisat2 as hisat2 {
         input: 
         idx = idx,
+        idx_prefix = idx_prefix,
         Trim_R1 = fastp.Trim_R1, 
         Trim_R2 = fastp.Trim_R2,
         pen_intronlen = pen_intronlen,

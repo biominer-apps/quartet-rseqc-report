@@ -11,7 +11,7 @@ task fastq_screen {
         set -e
         nt=$(nproc)
         mkdir -p /cromwell_root/tmp
-        screen_ref_dir=`dirname $fastq_screen_conf`
+        screen_ref_dir=`dirname ${fastq_screen_conf}`
         cp -r $screen_ref_dir /cromwell_root/tmp/
         fastq_screen --aligner bowtie2 --conf ${fastq_screen_conf} --top 100000 --threads $nt ${read1}
         fastq_screen --aligner bowtie2 --conf ${fastq_screen_conf} --top 100000 --threads $nt ${read2}
@@ -22,10 +22,10 @@ task fastq_screen {
     }
 
     output {
-        File png1 = "${read1name}_screen.png"
+        # File png1 = "${read1name}_screen.png"
         File txt1 = "${read1name}_screen.txt"
         File html1 = "${read1name}_screen.html"
-        File png2 = "${read2name}_screen.png"
+        # File png2 = "${read2name}_screen.png"
         File txt2 = "${read2name}_screen.txt"
         File html2 = "${read2name}_screen.html"
     }
